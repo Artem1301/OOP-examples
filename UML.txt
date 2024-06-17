@@ -508,3 +508,90 @@ sequenceDiagram
   StudentDatabase->>IdentificationResult: returnMatches()
   IdentificationResult->>UI: displayResults()
   UI->>Lecturer: showIdentifiedStudents()
+
+Спроєктувати (наприклад, використовуючи UML) засіб для пошуку копій програмного коду (плагіату) (можливість пошуку по переліку локальних каталогів)
+
+1. Діаграма прецедентів (Use Case Diagram)
+Мета: Показати взаємодію користувача із системою.
+
+Актор: Користувач
+Прецеденти:
+Обрати каталоги для аналізу
+Запустити аналіз на плагіат
+Отримати результати аналізу
+Переглянути деталі аналізу
+
+Діаграма класів (Class Diagram)
+classDiagram
+    User --|> UI
+    UI --> FileManager
+    UI --> CodeAnalyzer
+    CodeAnalyzer --> ComparisonEngine
+    CodeAnalyzer --> Database
+    FileManager --> Database
+
+    class User {
+    }
+
+    class UI {
+      +selectDirectories()
+      +startAnalysis()
+      +displayResults()
+    }
+
+    class FileManager {
+      +listFiles(directory)
+      +readFile(filePath)
+    }
+
+    class CodeAnalyzer {
+      +analyzeFiles(fileList)
+      +getAnalysisResults()
+    }
+
+    class ComparisonEngine {
+      +compareCode(code1, code2)
+    }
+
+    class Database {
+      +saveAnalysisResult(result)
+      +getPreviousResults()
+    }
+
+Діаграма діяльності (Activity Diagram)
+Мета: Показати процес виконання аналізу на плагіат.
+
+Процес:
+Користувач обирає каталоги.
+Система зчитує файли.
+Виконується аналіз.
+Зберігаються результати.
+Користувач переглядає результати.
+
+flowchart TD
+    A[Користувач обирає каталоги] --> B[Зчитування файлів]
+    B --> C[Аналіз коду]
+    C --> D[Зберігання результатів]
+    D --> E[Відображення результатів користувачу]
+
+Діаграма послідовності (Sequence Diagram)
+sequenceDiagram
+    participant User
+    participant UI
+    participant FileManager
+    participant CodeAnalyzer
+    participant ComparisonEngine
+    participant Database
+
+    User ->> UI: Вибір каталогів
+    UI ->> FileManager: Отримання списку файлів
+    FileManager ->> UI: Список файлів
+    UI ->> CodeAnalyzer: Передача файлів для аналізу
+    CodeAnalyzer ->> ComparisonEngine: Порівняння коду
+    ComparisonEngine -->> CodeAnalyzer: Результати порівняння
+    CodeAnalyzer ->> Database: Збереження результатів
+    Database -->> CodeAnalyzer: Підтвердження збереження
+    CodeAnalyzer -->> UI: Результати аналізу
+    UI ->> User: Відображення результатів
+
+
