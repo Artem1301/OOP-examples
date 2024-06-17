@@ -1,0 +1,510 @@
+Спроєктувати (наприклад, використовуючи UML) засіб для роботи з багатьма репозиторіями git одночасно (можливість створення ієрархії груп для репозиторіїв)
+1. Діаграма класів (Class Diagram)
+Діаграма класів відображає структуру системи, її класи та взаємозв'язки між ними.
+
+Основні класи:
+GitRepository
+
+Атрибути:
+name: String
+url: String
+branch: String
+Методи:
+clone()
+pull()
+push()
+fetch()
+RepositoryGroup
+
+Атрибути:
+name: String
+description: String
+Взаємозв'язки:
+subgroups: List<RepositoryGroup> (можливість вкладеності груп)
+repositories: List<GitRepository>
+User
+
+Атрибути:
+username: String
+email: String
+Методи:
+createRepository()
+createGroup()
+addRepositoryToGroup()
+removeRepositoryFromGroup()
+GitService
+
+Методи:
+cloneRepository(GitRepository repo)
+updateRepository(GitRepository repo)
+pushChanges(GitRepository repo)
+fetchUpdates(GitRepository repo)
+Authentication
+
+Атрибути:
+authToken: String
+Методи:
+login()
+logout()
+Взаємозв'язки між класами:
+User має відношення "один-до-багатьох" з RepositoryGroup і GitRepository.
+RepositoryGroup може містити інші RepositoryGroup (самоасоціація для ієрархії).
+GitService взаємодіє з GitRepository для виконання основних операцій.
+Authentication забезпечує автентифікацію користувачів.
+
+2. Діаграма компонентів (Component Diagram)
+Ця діаграма відображає основні компоненти системи та взаємозв'язки між ними.
+
+Компоненти:
+User Interface (UI)
+Інтерфейс користувача для взаємодії з системою.
+Repository Manager
+Логіка для управління репозиторіями та групами.
+GitService
+Серверна частина для роботи з Git-репозиторіями.
+Authentication Service
+Сервіс автентифікації користувачів.
+Зв'язки між компонентами:
+UI взаємодіє з Repository Manager.
+Repository Manager взаємодіє з GitService і Authentication Service.
+
+
+Щоб спроєктувати засіб для роботи з багатьма репозиторіями Git одночасно, який включає можливість створення ієрархії груп для репозиторіїв, можна скористатися UML (Unified Modeling Language) для візуалізації основних компонентів та їхніх взаємодій. Проєктування включає декілька ключових діаграм UML: діаграма класів, діаграма компонентів і діаграма діяльності. Розглянемо кожну з них:
+
+1. Діаграма класів (Class Diagram)
+Діаграма класів відображає структуру системи, її класи та взаємозв'язки між ними.
+
+Основні класи:
+GitRepository
+
+Атрибути:
+name: String
+url: String
+branch: String
+Методи:
+clone()
+pull()
+push()
+fetch()
+RepositoryGroup
+
+Атрибути:
+name: String
+description: String
+Взаємозв'язки:
+subgroups: List<RepositoryGroup> (можливість вкладеності груп)
+repositories: List<GitRepository>
+User
+
+Атрибути:
+username: String
+email: String
+Методи:
+createRepository()
+createGroup()
+addRepositoryToGroup()
+removeRepositoryFromGroup()
+GitService
+
+Методи:
+cloneRepository(GitRepository repo)
+updateRepository(GitRepository repo)
+pushChanges(GitRepository repo)
+fetchUpdates(GitRepository repo)
+Authentication
+
+Атрибути:
+authToken: String
+Методи:
+login()
+logout()
+Взаємозв'язки між класами:
+User має відношення "один-до-багатьох" з RepositoryGroup і GitRepository.
+RepositoryGroup може містити інші RepositoryGroup (самоасоціація для ієрархії).
+GitService взаємодіє з GitRepository для виконання основних операцій.
+Authentication забезпечує автентифікацію користувачів.
+Діаграма класів (UML):
+mermaid
+Копировать код
+classDiagram
+    class GitRepository {
+        +String name
+        +String url
+        +String branch
+        +clone()
+        +pull()
+        +push()
+        +fetch()
+    }
+    
+    class RepositoryGroup {
+        +String name
+        +String description
+        +List<RepositoryGroup> subgroups
+        +List<GitRepository> repositories
+    }
+    
+    class User {
+        +String username
+        +String email
+        +createRepository()
+        +createGroup()
+        +addRepositoryToGroup()
+        +removeRepositoryFromGroup()
+    }
+    
+    class GitService {
+        +cloneRepository(GitRepository repo)
+        +updateRepository(GitRepository repo)
+        +pushChanges(GitRepository repo)
+        +fetchUpdates(GitRepository repo)
+    }
+    
+    class Authentication {
+        +String authToken
+        +login()
+        +logout()
+    }
+    
+    User "1" --> "*" RepositoryGroup
+    RepositoryGroup "1" --> "*" RepositoryGroup : subgroups
+    RepositoryGroup "1" --> "*" GitRepository : repositories
+    User "1" --> "*" GitRepository
+    GitService --> GitRepository
+    Authentication <-- User
+2. Діаграма компонентів (Component Diagram)
+Ця діаграма відображає основні компоненти системи та взаємозв'язки між ними.
+
+Компоненти:
+User Interface (UI)
+Інтерфейс користувача для взаємодії з системою.
+Repository Manager
+Логіка для управління репозиторіями та групами.
+GitService
+Серверна частина для роботи з Git-репозиторіями.
+Authentication Service
+Сервіс автентифікації користувачів.
+Зв'язки між компонентами:
+UI взаємодіє з Repository Manager.
+Repository Manager взаємодіє з GitService і Authentication Service.
+Діаграма компонентів (UML):
+mermaid
+Копировать код
+classDiagram
+    component UI {
+        UserInterface
+    }
+    
+    component RepositoryManager {
+        createRepository()
+        createGroup()
+        addRepositoryToGroup()
+        removeRepositoryFromGroup()
+    }
+    
+    component GitService {
+        cloneRepository()
+        updateRepository()
+        pushChanges()
+        fetchUpdates()
+    }
+    
+    component AuthenticationService {
+        login()
+        logout()
+    }
+    
+    UI --> RepositoryManager
+    RepositoryManager --> GitService
+    RepositoryManager --> AuthenticationService
+3. Діаграма діяльності (Activity Diagram)
+Ця діаграма показує послідовність дій користувача при взаємодії з системою.
+
+Основні дії:
+Користувач автентифікується.
+Користувач створює нову групу репозиторіїв.
+Користувач додає репозиторій до групи.
+Користувач здійснює операції з репозиторієм (клонування, оновлення тощо).
+Діаграма діяльності (UML):
+mermaid
+
+stateDiagram
+    [*] --> Login
+    Login --> CreateGroup
+    CreateGroup --> AddRepository
+    AddRepository --> CloneRepository
+    CloneRepository --> UpdateRepository
+    UpdateRepository --> [*]
+
+    state Login {
+        loginUser
+    }
+    
+    state CreateGroup {
+        createNewGroup
+    }
+    
+    state AddRepository {
+        selectRepository
+        addRepoToGroup
+    }
+    
+    state CloneRepository {
+        initiateClone
+    }
+    
+    state UpdateRepository {
+        pullUpdates
+    }
+
+
+Спроєктувати (наприклад, використовуючи UML) засіб для генерації коду-заготовки для патернів проєктування на заданій мові програмування (можливість створення ієрархії груп для патернів)
+
+classDiagram
+    class DesignPattern {
+        +String name
+        +String description
+        +Map<String, String> codeTemplate
+        +getCodeTemplate(language: String): String
+    }
+    
+    class PatternGroup {
+        +String name
+        +String description
+        +List<PatternGroup> subgroups
+        +List<DesignPattern> patterns
+    }
+    
+    class User {
+        +String username
+        +String email
+        +createGroup()
+        +addPatternToGroup()
+        +generateCode(pattern: DesignPattern, language: String): String
+    }
+    
+    class CodeGenerator {
+        +generateCode(pattern: DesignPattern, language: String): String
+    }
+    
+    class Language {
+        +String name
+        +String version
+    }
+    
+    User "1" --> "*" PatternGroup
+    PatternGroup "1" --> "*" PatternGroup : subgroups
+    PatternGroup "1" --> "*" DesignPattern : patterns
+    User "1" --> "*" DesignPattern
+    CodeGenerator --> DesignPattern
+    DesignPattern --> "*" Language
+
+
+classDiagram
+    component UI {
+        UserInterface
+    }
+    
+    component PatternManager {
+        createGroup()
+        addPattern()
+        getPatterns()
+    }
+    
+    component CodeGenerator {
+        generateCode()
+    }
+    
+    component Database {
+        savePattern()
+        loadPattern()
+    }
+    
+    component AuthenticationService {
+        login()
+        logout()
+    }
+    
+    UI --> PatternManager
+    PatternManager --> CodeGenerator
+    PatternManager --> Database
+    UI --> AuthenticationService
+
+
+stateDiagram
+    [*] --> Login
+    Login --> CreateGroup
+    CreateGroup --> AddPattern
+    AddPattern --> SelectPattern
+    SelectPattern --> SelectLanguage
+    SelectLanguage --> GenerateCode
+    GenerateCode --> [*]
+
+    state Login {
+        loginUser
+    }
+    
+    state CreateGroup {
+        createNewGroup
+    }
+    
+    state AddPattern {
+        selectPattern
+        addPatternToGroup
+    }
+    
+    state SelectPattern {
+        choosePattern
+    }
+    
+    state SelectLanguage {
+        chooseLanguage
+    }
+    
+    state GenerateCode {
+        generateCodeTemplate
+    }
+
+
+Спроєктувати (наприклад, використовуючи UML) засіб для ідентифікації студентів в аудиторії (наприклад, відвідування лекцій) за фотографією аудиторії (можливість додавання декількох фотографій одного студента)
+
+---
+title: Use Case Diagram for Student Identification System
+---
+
+Діаграма прецедентів (Use Case Diagram)
+usecaseDiagram
+  actor Admin
+  actor Lecturer
+
+  Admin --> (Login)
+  Admin --> (Upload Student Photo)
+  Admin --> (Add Multiple Photos for Student)
+  Admin --> (Manage Student Records)
+
+  Lecturer --> (Login)
+  Lecturer --> (Identify Students from Lecture Photo)
+  Lecturer --> (View Identified Students)
+  Lecturer --> (Generate Attendance Report)
+
+  (Identify Students from Lecture Photo) --> (View Identified Students) : includes
+  (Generate Attendance Report) --> (View Identified Students) : includes
+  (Upload Student Photo) --> (Add Multiple Photos for Student) : includes
+
+Діаграма класів (Class Diagram)
+
+---
+title: Class Diagram for Student Identification System
+---
+classDiagram
+  class User {
+    +String username
+    +String password
+    +login()
+    +logout()
+  }
+
+  class Admin {
+    +uploadStudentPhoto()
+    +addStudentPhoto()
+    +manageStudentRecords()
+  }
+
+  class Lecturer {
+    +identifyStudents()
+    +viewIdentifiedStudents()
+    +generateAttendanceReport()
+  }
+
+  class Student {
+    +int studentID
+    +String name
+    +List~Photo~ photos
+    +addPhoto()
+    +removePhoto()
+  }
+
+  class Photo {
+    +int photoID
+    +byte[] imageData
+    +Date timestamp
+    +upload()
+    +delete()
+  }
+
+  class LecturePhoto {
+    +int photoID
+    +byte[] imageData
+    +Date lectureDate
+    +upload()
+    +delete()
+    +identifyStudents()
+  }
+
+  class IdentificationResult {
+    +int resultID
+    +int photoID
+    +List~Student~ identifiedStudents
+    +getResults()
+  }
+
+  User <|-- Admin
+  User <|-- Lecturer
+  Student --> "*" Photo
+  LecturePhoto --> "*" IdentificationResult
+  IdentificationResult --> "*" Student
+
+
+Поведінкові діаграми
+
+---
+title: Activity Diagram for Identifying Students from Lecture Photo
+---
+stateDiagram
+  [*] --> Login
+  Login --> UploadLecturePhoto
+  UploadLecturePhoto --> ProcessPhoto
+  ProcessPhoto --> IdentifyStudents
+  IdentifyStudents --> GenerateReport
+  GenerateReport --> [*]
+
+  state Login {
+    loginUser
+  }
+
+  state UploadLecturePhoto {
+    uploadPhoto()
+  }
+
+  state ProcessPhoto {
+    processImage()
+  }
+
+  state IdentifyStudents {
+    identifyFaces()
+    matchWithDatabase()
+  }
+
+  state GenerateReport {
+    createReport()
+  }
+
+
+---
+title: Sequence Diagram for Identifying Students from Lecture Photo
+---
+sequenceDiagram
+  participant Lecturer
+  participant UI
+  participant LecturePhoto
+  participant IdentificationResult
+  participant StudentDatabase
+
+  Lecturer->>UI: Upload Lecture Photo
+  UI->>LecturePhoto: savePhoto()
+  LecturePhoto->>UI: confirmUpload()
+  UI->>LecturePhoto: identifyStudents()
+  LecturePhoto->>StudentDatabase: matchFaces()
+  StudentDatabase->>IdentificationResult: returnMatches()
+  IdentificationResult->>UI: displayResults()
+  UI->>Lecturer: showIdentifiedStudents()
